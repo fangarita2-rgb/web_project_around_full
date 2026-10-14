@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "web_project_around_react-main",
   "private": true,
   "version": "0.0.0",
@@ -30,14 +29,5 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.15.0",
     "vite": "^8.3.0"
-=======
-  "name": "web_project_around_full",
-  "private": true,
-  "version": "1.0.0",
-  "scripts": {
-    "dev:client": "npm run dev --prefix client",
-    "dev:server": "npm run dev --prefix server",
-    "install:all": "npm install --prefix client && npm install --prefix server"
->>>>>>> 7d4de4371246861c868dc8faee5778861ac4548b
   }
 }
