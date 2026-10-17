@@ -1,4 +1,3 @@
-import type { Request, Response, NextFunction } from 'express';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -19,16 +18,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/aroundb')
 
 app.use(express.json());
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-  req.user = {
-    _id: '6ac56f89e8da1ecf01b5e88e',
-  };
-  next();
-});
-
 app.use(router);
 
-app.use((req: Request, res: Response) => {
+app.use((_req, res) => {
   res.status(404).json({ message: 'Requested resource not found' });
 });
 
