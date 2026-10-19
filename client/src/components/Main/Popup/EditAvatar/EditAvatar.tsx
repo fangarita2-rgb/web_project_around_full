@@ -1,14 +1,45 @@
-import { useRef, useContext, type FormEvent } from 'react';
+import { useState, useContext, type FormEvent, type ChangeEvent } from 'react';
 import CurrentUserContext from '../../../../contexts/CurrentUserContext';
 
 export default function EditAvatar(): React.JSX.Element {
   const { handleUpdateAvatar } = useContext(CurrentUserContext);
-  const avatarRef = useRef<HTMLInputElement>(null);
+
+  const [avatar, setAvatar] = useState('');
+  const [error, setError] = useState('');
+  const [touched, setTouched] = useState(false);
+
+  function validate(value: string): string {
+    if (!value.trim()) return 'Este campo es obligatorio';
+    try {
+      new URL(value);
+      return '';
+    } catch {
+      return 'Introduce una URL válida';
+    }
+  }
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>): void {
+    const { value } = e.target;
+    setAvatar(value);
+    if (touched) {
+      setError(validate(value));
+    }
+  }
+
+  function handleBlur(e: ChangeEvent<HTMLInputElement>): void {
+    setTouched(true);
+    setError(validate(e.target.value));
+  }
+
+  const isFormValid = !validate(avatar);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    if (avatarRef.current) {
-      handleUpdateAvatar({ avatar: avatarRef.current.value });
+    setTouched(true);
+    const err = validate(avatar);
+    setError(err);
+    if (!err) {
+      handleUpdateAvatar({ avatar });
     }
   }
 
@@ -28,11 +59,22 @@ export default function EditAvatar(): React.JSX.Element {
           placeholder="Enlace de la foto de perfil"
           required
           type="url"
-          ref={avatarRef}
+          value={avatar}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
-        <span className="popup__error" id="avatar-url-error"></span>
+        <span
+          className={`popup__error${error && touched ? ' popup__error_visible' : ''}`}
+          id="avatar-url-error"
+        >
+          {error}
+        </span>
       </label>
-      <button className="button popup__button" type="submit">
+      <button
+        className={`button popup__button${!isFormValid ? ' popup__button_disabled' : ''}`}
+        type="submit"
+        disabled={!isFormValid}
+      >
         Guardar
       </button>
     </form>
