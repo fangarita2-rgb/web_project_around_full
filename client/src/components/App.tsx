@@ -25,18 +25,15 @@ function App(): React.JSX.Element {
   const [cards, setCards] = useState<CardData[]>([]);
   const [popup, setPopup] = useState<PopupConfig | null>(null);
 
-<<<<<<< HEAD
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isCheckingToken, setIsCheckingToken] = useState<boolean>(true);
 
-=======
   // Estados para autenticación
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userEmail, setUserEmail] = useState<string>('');
   const [isCheckingToken, setIsCheckingToken] = useState<boolean>(true);
 
   // Estado para InfoTooltip
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState<boolean>(false);
   const [isAuthSuccess, setIsAuthSuccess] = useState<boolean>(false);
   const [tooltipMessage, setTooltipMessage] = useState<string>('');
@@ -45,7 +42,6 @@ function App(): React.JSX.Element {
 
   // Comprobar token guardado al iniciar la aplicación
   useEffect(() => {
-<<<<<<< HEAD
     const token = localStorage.getItem('jwt');
     if (token) {
       api
@@ -53,7 +49,6 @@ function App(): React.JSX.Element {
         .then((userData) => {
           setCurrentUser(userData);
           setIsLoggedIn(true);
-=======
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       auth
@@ -63,7 +58,6 @@ function App(): React.JSX.Element {
             setIsLoggedIn(true);
             setUserEmail(res.data.email);
           }
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
         })
         .catch((err) => {
           console.error('Error al verificar el token:', err);
@@ -77,7 +71,6 @@ function App(): React.JSX.Element {
     }
   }, []);
 
-<<<<<<< HEAD
   // Cargar tarjetas cuando el usuario esté autenticado
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -88,7 +81,6 @@ function App(): React.JSX.Element {
       .catch((err) => console.error('Error al obtener tarjetas:', err));
   }, [isLoggedIn]);
 
-=======
   // Cargar perfil e imágenes de la API local cuando el usuario esté autenticado
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -108,7 +100,6 @@ function App(): React.JSX.Element {
   }, [isLoggedIn]);
 
   // Manejo del registro
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
   const handleRegister = async (email: string, password: string): Promise<void> => {
     try {
       await auth.register(email, password);
@@ -124,7 +115,6 @@ function App(): React.JSX.Element {
     }
   };
 
-<<<<<<< HEAD
   const handleLogin = async (email: string, password: string): Promise<void> => {
     try {
       const data = await auth.authorize(email, password);
@@ -133,7 +123,6 @@ function App(): React.JSX.Element {
       setCurrentUser(userData);
       setIsLoggedIn(true);
       navigate('/');
-=======
   // Manejo del inicio de sesión
   const handleLogin = async (email: string, password: string): Promise<void> => {
     try {
@@ -144,7 +133,6 @@ function App(): React.JSX.Element {
         setUserEmail(email);
         navigate('/');
       }
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       setIsAuthSuccess(false);
@@ -153,18 +141,15 @@ function App(): React.JSX.Element {
     }
   };
 
-<<<<<<< HEAD
   const handleSignOut = (): void => {
     localStorage.removeItem('jwt');
     setIsLoggedIn(false);
     setCurrentUser(null);
-=======
   // Cerrar sesión
   const handleSignOut = (): void => {
     localStorage.removeItem('jwt');
     setIsLoggedIn(false);
     setUserEmail('');
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
     navigate('/signin');
   };
 
@@ -227,10 +212,7 @@ function App(): React.JSX.Element {
     }
   }
 
-<<<<<<< HEAD
-=======
   // Evita redirecciones indebidas mientras se verifica el token
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
   if (isCheckingToken) {
     return <div className="page__loader">Cargando...</div>;
   }
@@ -240,15 +222,12 @@ function App(): React.JSX.Element {
       value={{ currentUser, handleUpdateUser, handleUpdateAvatar, handleAddPlaceSubmit }}
     >
       <div className="page__content">
-<<<<<<< HEAD
         <Header
           isLoggedIn={isLoggedIn}
           userEmail={currentUser?.email ?? ''}
           onSignOut={handleSignOut}
         />
-=======
         <Header isLoggedIn={isLoggedIn} userEmail={userEmail} onSignOut={handleSignOut} />
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
 
         <Routes>
           <Route
@@ -285,15 +264,12 @@ function App(): React.JSX.Element {
           <Route
             path="/signup"
             element={
-<<<<<<< HEAD
               isLoggedIn ? <Navigate to="/" replace /> : <Register onRegister={handleRegister} />
-=======
               isLoggedIn ? (
                 <Navigate to="/" replace />
               ) : (
                 <Register onRegister={handleRegister} />
               )
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
             }
           />
 
