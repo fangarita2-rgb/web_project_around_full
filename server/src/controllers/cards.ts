@@ -1,10 +1,17 @@
 import type { Request, Response } from 'express';
 import Card from '../models/card.js';
 
+<<<<<<< HEAD
 // GET /cards — Devuelve solo las tarjetas del usuario actual, de más reciente a más antigua
 export const getCards = async (req: Request, res: Response): Promise<void> => {
   const userId = req.user?._id;
   const cards = await Card.find({ owner: userId }).sort({ createdAt: -1 });
+=======
+// GET /cards — Devuelve todas las tarjetas con isLiked
+export const getCards = async (req: Request, res: Response): Promise<void> => {
+  const cards = await Card.find({});
+  const userId = req.user?._id;
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
 
   const cardsWithIsLiked = cards.map((card) => ({
     ...card.toObject(),
@@ -38,12 +45,19 @@ export const createCard = async (req: Request, res: Response): Promise<void> => 
   });
 };
 
+<<<<<<< HEAD
 // DELETE /cards/:id — Elimina una tarjeta solo si es del usuario actual
 export const deleteCard = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const userId = req.user?._id;
 
   const card = await Card.findById(id);
+=======
+// DELETE /cards/:id — Elimina una tarjeta por su _id
+export const deleteCard = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const card = await Card.findByIdAndDelete(id);
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
 
   if (!card) {
     throw Object.assign(new Error('No se encontró ninguna tarjeta con ese id'), {
@@ -51,6 +65,7 @@ export const deleteCard = async (req: Request, res: Response): Promise<void> => 
     });
   }
 
+<<<<<<< HEAD
   if (card.owner.toString() !== userId) {
     throw Object.assign(new Error('No puedes eliminar una tarjeta que no es tuya'), {
       statusCode: 403,
@@ -74,11 +89,22 @@ export const likeCard = async (req: Request, res: Response): Promise<void> => {
   }
 
   const updatedCard = await Card.findByIdAndUpdate(
+=======
+  res.json(card);
+};
+
+// PUT /cards/:id/likes — Da like a una tarjeta
+export const likeCard = async (req: Request, res: Response): Promise<void> => {
+  const userId = req.user?._id;
+
+  const card = await Card.findByIdAndUpdate(
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
     req.params.id,
     { $addToSet: { likes: userId } },
     { new: true },
   );
 
+<<<<<<< HEAD
   res.json({
     ...updatedCard!.toObject(),
     isLiked: updatedCard!.likes.some((id) => id.toString() === userId),
@@ -90,6 +116,29 @@ export const dislikeCard = async (req: Request, res: Response): Promise<void> =>
   const userId = req.user?._id;
 
   const card = await Card.findById(req.params.id);
+=======
+  if (!card) {
+    throw Object.assign(new Error('No se encontró ninguna tarjeta con ese id'), {
+      statusCode: 404,
+    });
+  }
+
+  res.json({
+    ...card.toObject(),
+    isLiked: card.likes.some((id) => id.toString() === userId),
+  });
+};
+
+// DELETE /cards/:id/likes — Le quita el like a una tarjeta
+export const dislikeCard = async (req: Request, res: Response): Promise<void> => {
+  const userId = req.user?._id;
+
+  const card = await Card.findByIdAndUpdate(
+    req.params.id,
+    { $pull: { likes: userId } },
+    { new: true },
+  );
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
 
   if (!card) {
     throw Object.assign(new Error('No se encontró ninguna tarjeta con ese id'), {
@@ -97,6 +146,7 @@ export const dislikeCard = async (req: Request, res: Response): Promise<void> =>
     });
   }
 
+<<<<<<< HEAD
   const updatedCard = await Card.findByIdAndUpdate(
     req.params.id,
     { $pull: { likes: userId } },
@@ -106,5 +156,10 @@ export const dislikeCard = async (req: Request, res: Response): Promise<void> =>
   res.json({
     ...updatedCard!.toObject(),
     isLiked: updatedCard!.likes.some((id) => id.toString() === userId),
+=======
+  res.json({
+    ...card.toObject(),
+    isLiked: card.likes.some((id) => id.toString() === userId),
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
   });
 };

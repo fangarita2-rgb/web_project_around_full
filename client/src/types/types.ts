@@ -19,7 +19,10 @@ export interface UserData {
   name: string;
   about: string;
   avatar: string;
+<<<<<<< HEAD
   email: string;
+=======
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
 }
 
 export interface CurrentUserContextType {

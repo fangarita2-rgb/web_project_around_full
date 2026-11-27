@@ -8,10 +8,15 @@ import type {
 
 interface ApiOptions {
   baseUrl: string;
+<<<<<<< HEAD
+=======
+  headers: Record<string, string>;
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
 }
 
 class Api {
   private baseUrl: string;
+<<<<<<< HEAD
 
   constructor({ baseUrl }: ApiOptions) {
     this.baseUrl = baseUrl;
@@ -23,6 +28,13 @@ class Api {
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
+=======
+  private headers: Record<string, string>;
+
+  constructor({ baseUrl, headers }: ApiOptions) {
+    this.baseUrl = baseUrl;
+    this.headers = headers;
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
   }
 
   private async handleResponse<T>(res: Response): Promise<T> {
@@ -34,14 +46,22 @@ class Api {
 
   async getUserInfo(): Promise<UserData> {
     const res = await fetch(`${this.baseUrl}/users/me`, {
+<<<<<<< HEAD
       headers: this.getHeaders(),
+=======
+      headers: this.headers,
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
     });
     return this.handleResponse<UserData>(res);
   }
 
   async getInitialCards(): Promise<CardData[]> {
     const res = await fetch(`${this.baseUrl}/cards`, {
+<<<<<<< HEAD
       headers: this.getHeaders(),
+=======
+      headers: this.headers,
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
     });
     return this.handleResponse<CardData[]>(res);
   }
@@ -49,7 +69,11 @@ class Api {
   async updateUserInfo(data: UserFormData): Promise<UserData> {
     const res = await fetch(`${this.baseUrl}/users/me`, {
       method: 'PATCH',
+<<<<<<< HEAD
       headers: this.getHeaders(),
+=======
+      headers: this.headers,
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
       body: JSON.stringify(data),
     });
     return this.handleResponse<UserData>(res);
@@ -58,7 +82,11 @@ class Api {
   async updateAvatar(data: AvatarFormData): Promise<UserData> {
     const res = await fetch(`${this.baseUrl}/users/me/avatar`, {
       method: 'PATCH',
+<<<<<<< HEAD
       headers: this.getHeaders(),
+=======
+      headers: this.headers,
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
       body: JSON.stringify(data),
     });
     return this.handleResponse<UserData>(res);
@@ -67,7 +95,11 @@ class Api {
   async addCard(data: CardFormData): Promise<CardData> {
     const res = await fetch(`${this.baseUrl}/cards`, {
       method: 'POST',
+<<<<<<< HEAD
       headers: this.getHeaders(),
+=======
+      headers: this.headers,
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
       body: JSON.stringify(data),
     });
     return this.handleResponse<CardData>(res);
@@ -76,7 +108,11 @@ class Api {
   async deleteCard(cardId: string): Promise<void> {
     const res = await fetch(`${this.baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
+<<<<<<< HEAD
       headers: this.getHeaders(),
+=======
+      headers: this.headers,
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
     });
     return this.handleResponse<void>(res);
   }
@@ -84,7 +120,11 @@ class Api {
   async likeCard(cardId: string): Promise<CardData> {
     const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
       method: 'PUT',
+<<<<<<< HEAD
       headers: this.getHeaders(),
+=======
+      headers: this.headers,
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
     });
     return this.handleResponse<CardData>(res);
   }
@@ -92,13 +132,24 @@ class Api {
   async unlikeCard(cardId: string): Promise<CardData> {
     const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
       method: 'DELETE',
+<<<<<<< HEAD
       headers: this.getHeaders(),
+=======
+      headers: this.headers,
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
     });
     return this.handleResponse<CardData>(res);
   }
 }
 
 export const api = new Api({
+<<<<<<< HEAD
   baseUrl: import.meta.env.VITE_API_URL ?? 'http://localhost:3001',
   
+=======
+  baseUrl: 'http://localhost:3001',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+>>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
 });
