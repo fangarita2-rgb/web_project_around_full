@@ -1,9 +1,4 @@
-import type React from 'react';
-
-export type PopupConfig = {
-  title?: string;
-  children: React.ReactNode;
-};
+import type { ReactNode } from 'react';
 
 export interface CardData {
   _id: string;
@@ -19,10 +14,7 @@ export interface UserData {
   name: string;
   about: string;
   avatar: string;
-<<<<<<< HEAD
   email: string;
-=======
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
 }
 
 export interface CurrentUserContextType {
@@ -44,4 +36,12 @@ export interface UserFormData {
 
 export interface AvatarFormData {
   avatar: string;
+}
+
+export interface PopupConfig {
+  type: string;
+}
+
+export interface ChildrenProps {
+  children: ReactNode;
 }

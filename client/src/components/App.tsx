@@ -28,11 +28,6 @@ function App(): React.JSX.Element {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isCheckingToken, setIsCheckingToken] = useState<boolean>(true);
 
-  // Estados para autenticación
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [isCheckingToken, setIsCheckingToken] = useState<boolean>(true);
-
   // Estado para InfoTooltip
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState<boolean>(false);
   const [isAuthSuccess, setIsAuthSuccess] = useState<boolean>(false);
@@ -49,15 +44,6 @@ function App(): React.JSX.Element {
         .then((userData) => {
           setCurrentUser(userData);
           setIsLoggedIn(true);
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      auth
-        .getContent(jwt)
-        .then((res) => {
-          if (res.data) {
-            setIsLoggedIn(true);
-            setUserEmail(res.data.email);
-          }
         })
         .catch((err) => {
           console.error('Error al verificar el token:', err);
@@ -76,27 +62,9 @@ function App(): React.JSX.Element {
     if (!isLoggedIn) return;
 
     api
-      .getInitialCards()
-      .then((initialCards) => setCards(initialCards))
-      .catch((err) => console.error('Error al obtener tarjetas:', err));
-  }, [isLoggedIn]);
-
-  // Cargar perfil e imágenes de la API local cuando el usuario esté autenticado
-  useEffect(() => {
-    if (!isLoggedIn) return;
-
-    (async () => {
-      try {
-        const [userData, initialCards] = await Promise.all([
-          api.getUserInfo(),
-          api.getInitialCards(),
-        ]);
-        setCurrentUser(userData);
-        setCards(initialCards);
-      } catch (error) {
-        console.error('Error al obtener datos iniciales de la API local:', error);
-      }
-    })();
+      .getCards()
+      .then((initialCards: CardData[]) => setCards(initialCards))
+      .catch((err: Error) => console.error('Error al obtener tarjetas:', err));
   }, [isLoggedIn]);
 
   // Manejo del registro
@@ -115,6 +83,7 @@ function App(): React.JSX.Element {
     }
   };
 
+  // Manejo del inicio de sesión
   const handleLogin = async (email: string, password: string): Promise<void> => {
     try {
       const data = await auth.authorize(email, password);
@@ -123,16 +92,6 @@ function App(): React.JSX.Element {
       setCurrentUser(userData);
       setIsLoggedIn(true);
       navigate('/');
-  // Manejo del inicio de sesión
-  const handleLogin = async (email: string, password: string): Promise<void> => {
-    try {
-      const data = await auth.authorize(email, password);
-      if (data.token) {
-        localStorage.setItem('jwt', data.token);
-        setIsLoggedIn(true);
-        setUserEmail(email);
-        navigate('/');
-      }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       setIsAuthSuccess(false);
@@ -141,15 +100,11 @@ function App(): React.JSX.Element {
     }
   };
 
-  const handleSignOut = (): void => {
-    localStorage.removeItem('jwt');
-    setIsLoggedIn(false);
-    setCurrentUser(null);
   // Cerrar sesión
   const handleSignOut = (): void => {
     localStorage.removeItem('jwt');
     setIsLoggedIn(false);
-    setUserEmail('');
+    setCurrentUser(null);
     navigate('/signin');
   };
 
@@ -165,7 +120,7 @@ function App(): React.JSX.Element {
   async function handleCardLike(card: CardData): Promise<void> {
     const isLiked = card.isLiked;
     try {
-      const apiCall = isLiked ? api.unlikeCard(card._id) : api.likeCard(card._id);
+      const apiCall = isLiked ? api.dislikeCard(card._id) : api.likeCard(card._id);
       const newCard = await apiCall;
       setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
     } catch (error) {
@@ -227,7 +182,6 @@ function App(): React.JSX.Element {
           userEmail={currentUser?.email ?? ''}
           onSignOut={handleSignOut}
         />
-        <Header isLoggedIn={isLoggedIn} userEmail={userEmail} onSignOut={handleSignOut} />
 
         <Routes>
           <Route
@@ -248,23 +202,12 @@ function App(): React.JSX.Element {
 
           <Route
             path="/signin"
-<<<<<<< HEAD
             element={isLoggedIn ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />}
-=======
-            element={
-              isLoggedIn ? (
-                <Navigate to="/" replace />
-              ) : (
-                <Login onLogin={handleLogin} />
-              )
-            }
->>>>>>> 5fe04eeee1f3df24f677725ba1044fc66282c058
           />
 
           <Route
             path="/signup"
             element={
-              isLoggedIn ? <Navigate to="/" replace /> : <Register onRegister={handleRegister} />
               isLoggedIn ? (
                 <Navigate to="/" replace />
               ) : (
