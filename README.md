@@ -136,3 +136,21 @@ web_project_around_full/
 - La autenticación se gestiona mediante **JWT** firmado con clave secreta, con expiración de 7 días.
 - El campo `password` tiene `select: false` en el modelo Mongoose para que nunca se devuelva en las consultas.
 - El token se guarda en `localStorage` durante esta etapa de desarrollo. La migración futura a **Cookies HttpOnly** es la mejora recomendada para producción.
+
+---
+
+## 🌐 Despliegue en Producción
+
+La aplicación está desplegada en **Vercel** en dos proyectos separados:
+
+| Componente                  | URL                                             |
+| --------------------------- | ----------------------------------------------- |
+| **Front-end (Cliente)**     | https://web-project-around-full-3kmm.vercel.app |
+| **Back-end (Servidor API)** | https://web-project-around-full-tgnb.vercel.app |
+
+### Verificar que el servidor está activo:
+
+```
+GET https://web-project-around-full-tgnb.vercel.app/health
+→ {"status":"ok"}
+```
