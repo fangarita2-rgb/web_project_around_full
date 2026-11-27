@@ -39,7 +39,8 @@ export interface AvatarFormData {
 }
 
 export interface PopupConfig {
-  type: string;
+  title?: string;
+  children: ReactNode;
 }
 
 export interface ChildrenProps {
